@@ -37,12 +37,21 @@ namespace MitybosPlanas
         private void CreateExcel(string fileName)
         {
             FileInfo savePath = new FileInfo(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName));
+            File.Delete(savePath.FullName);
             using var package = new ExcelPackage(savePath);
-
             var sheet = package.Workbook.Worksheets.Add("Planas");
 
+            sheet.Cells["A1"].Value = "Valgiai";
+            sheet.Cells["B1"].Value = "Pirmadienis, Antradienis";
+            sheet.Cells["C1"].Value = "Trečiadienis, Ketvirtadienis";
+            sheet.Cells["D1"].Value = "Penktadienis, Šeštadienis";
+            sheet.Cells["E1"].Value = "Sekmadienis, Pirmadienis";
+
+            sheet.Column(1).Width = 10;
 
             package.Save();
         }
+
+        
     }
 }
