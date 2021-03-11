@@ -31,14 +31,18 @@ namespace MitybosPlanas
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            CreateExcel("Testas");
+            CreateExcel("Testas.xlsx");
         }
 
         private void CreateExcel(string fileName)
         {
-            string savePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+            FileInfo savePath = new FileInfo(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName));
+            using var package = new ExcelPackage(savePath);
 
-            
+            var sheet = package.Workbook.Worksheets.Add("Planas");
+
+
+            package.Save();
         }
     }
 }
