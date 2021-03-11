@@ -22,11 +22,16 @@ namespace MitybosPlanas
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<Recipe> recipes = new List<Recipe>();
         public MainWindow()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             InitializeComponent();
-
+            ReadRecipes("Receptai");
+            FillComboBox(comboBox);
+            FillComboBox(comboBox1);
+            FillComboBox(comboBox2);
+            FillComboBox(comboBox3);
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -52,6 +57,22 @@ namespace MitybosPlanas
             package.Save();
         }
 
-        
+        private void FillComboBox(ComboBox box)
+        {
+            List<string> options = new List<string>();
+            foreach (Recipe recipe in recipes)
+            {
+                options.Add(recipe.Title);
+            }
+            box.ItemsSource = options;
+        }
+        private void ReadRecipes(string folderName)
+        {
+            string[] paths = Directory.GetFiles(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName));
+            foreach (string path in paths)
+            {
+                recipes.Add(new Recipe(path));
+            }
+        }
     }
 }
