@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MitybosPlanas"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800" SizeToContent="Height">
+        Title="MainWindow" Height="800" Width="800" SizeToContent="WidthAndHeight">
     <Grid Margin="0,4,0,-6" Height="800">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="523*"/>
-            <ColumnDefinition Width="472*"/>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="139*"/>
+            <ColumnDefinition Width="271*"/>
+            <ColumnDefinition Width="379*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="button" Content="Generuoti" HorizontalAlignment="Left" Height="30" Margin="384,728,0,0" VerticalAlignment="Top" Width="80" Click="button_Click" Cursor="" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
+        <Button x:Name="button" Content="Generuoti" HorizontalAlignment="Left" Height="30" Margin="230,728,0,0" VerticalAlignment="Top" Width="80" Click="button_Click" Cursor="" RenderTransformOrigin="0.5,0.5" Grid.Column="2" Grid.ColumnSpan="2">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -21,14 +23,14 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Height="20" Margin="76,67,0,0" VerticalAlignment="Top" Width="150" AutomationProperties.HelpText="Abc" RenderTransformOrigin="0.49,2.352"/>
-        <ComboBox x:Name="comboBox1" HorizontalAlignment="Left" Margin="76,134,0,0" VerticalAlignment="Top" Width="150" Height="20"/>
-        <Label x:Name="label" Content="Pirmadienis, Antradienis" HorizontalAlignment="Left" Height="30" Margin="80,34,0,0" VerticalAlignment="Top" Width="150"/>
-        <Label x:Name="label1" Content="Trečiadienis, Ketvirtadienis" HorizontalAlignment="Left" Height="30" Margin="80,102,0,0" VerticalAlignment="Top" Width="150"/>
-        <Label x:Name="label2" Content="Penktadienis, Šeštadienis" HorizontalAlignment="Left" Height="30" Margin="80,165,0,0" VerticalAlignment="Top" Width="150"/>
-        <ComboBox x:Name="comboBox2" HorizontalAlignment="Left" Height="20" Margin="79,199,0,0" VerticalAlignment="Top" Width="150"/>
-        <Label x:Name="label3" Content="Sekmadienis, Pirmadienis" HorizontalAlignment="Left" Height="30" Margin="80,239,0,0" VerticalAlignment="Top" Width="150"/>
-        <ComboBox x:Name="comboBox3" HorizontalAlignment="Left" Height="20" Margin="80,269,0,0" VerticalAlignment="Top" Width="150"/>
+        <ComboBox x:Name="comboBox" Height="20" Margin="0,67,0,0" VerticalAlignment="Top" AutomationProperties.HelpText="Abc" RenderTransformOrigin="0.49,2.352" Grid.Column="1" HorizontalAlignment="Center" Width="150"/>
+        <ComboBox x:Name="comboBox1" HorizontalAlignment="Center" Margin="0,134,0,0" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="1"/>
+        <Label x:Name="label" Content="Pirmadienis, Antradienis" HorizontalAlignment="Center" Height="30" Margin="0,34,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
+        <Label x:Name="label1" Content="Trečiadienis, Ketvirtadienis" HorizontalAlignment="Center" Height="30" Margin="0,102,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
+        <Label x:Name="label2" Content="Penktadienis, Šeštadienis" HorizontalAlignment="Center" Height="30" Margin="0,165,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
+        <ComboBox x:Name="comboBox2" HorizontalAlignment="Center" Height="20" Margin="0,199,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
+        <Label x:Name="label3" Content="Sekmadienis, Pirmadienis" HorizontalAlignment="Center" Height="30" Margin="0,239,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
+        <ComboBox x:Name="comboBox3" HorizontalAlignment="Center" Height="20" Margin="0,269,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
 
     </Grid>
 </Window>
