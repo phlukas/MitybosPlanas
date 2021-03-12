@@ -36,7 +36,14 @@ namespace MitybosPlanas
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            CreateExcel("Testas.xlsx");
+            if(textBox.Text.Length > 1 && textBox.Text.Length <= 50)
+            {
+                CreateExcel(textBox.Text);
+            }
+            else
+            {
+                MessageBox.Show("Blogas plano pavadinimas", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void CreateExcel(string fileName)
@@ -55,6 +62,8 @@ namespace MitybosPlanas
             sheet.Column(1).Width = 10;
 
             package.Save();
+
+            MessageBox.Show("Dokumentas sukurtas sėkmingai", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void FillComboBox(ComboBox box)
