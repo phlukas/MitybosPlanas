@@ -23,6 +23,7 @@ namespace MitybosPlanas
     public partial class MainWindow : Window
     {
         private List<Recipe> recipes = new List<Recipe>();
+
         public MainWindow()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -72,7 +73,14 @@ namespace MitybosPlanas
                 sheet.Column(4).Width = 25;
                 sheet.Column(5).Width = 25;
 
+                sheet.Cells[1, 1, 1, 5].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                sheet.Cells[1, 1, 1, 5].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
+                sheet.Cells[2, 1, 7, 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                sheet.Cells[2, 1, 7, 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
 
+                sheet.Cells[1, 1, 7, 5].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thick, System.Drawing.Color.Black);
+
+                DisplayMeal(sheet);
 
                 package.Save();
 
@@ -89,6 +97,11 @@ namespace MitybosPlanas
                     throw;
                 }
             }
+        }
+
+        private void DisplayMeal(ExcelWorksheet sheet)
+        {
+
         }
 
         private void FillComboBox(ComboBox box)
