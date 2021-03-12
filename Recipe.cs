@@ -12,7 +12,11 @@ namespace MitybosPlanas
         public Recipe(string filePath)
         {
             Description = InOut.ReadRecipe(filePath, ingredients);
+            SetTitle(filePath);
+        }
 
+        private void SetTitle(string filePath)
+        {
             int titleStart = filePath.LastIndexOf(@"\");
             filePath = filePath.Remove(0, titleStart + 1);
             int titleEnd = filePath.LastIndexOf(".");
