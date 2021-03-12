@@ -67,18 +67,21 @@ namespace MitybosPlanas
                 sheet.Cells["D1"].Value = "Penktadienis, Šeštadienis";
                 sheet.Cells["E1"].Value = "Sekmadienis, Pirmadienis";
 
-                sheet.Column(1).Width = 10;
-                sheet.Column(2).Width = 25;
-                sheet.Column(3).Width = 25;
-                sheet.Column(4).Width = 25;
-                sheet.Column(5).Width = 25;
+                sheet.Column(1).Width = 8;
+                sheet.Column(2).Width = 18;
+                sheet.Column(3).Width = 18;
+                sheet.Column(4).Width = 18;
+                sheet.Column(5).Width = 18;
 
                 sheet.Cells[1, 1, 1, 5].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                 sheet.Cells[1, 1, 1, 5].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
                 sheet.Cells[2, 1, 7, 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                 sheet.Cells[2, 1, 7, 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
 
-                sheet.Cells[1, 1, 7, 5].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thick, System.Drawing.Color.Black);
+                sheet.Cells[1, 1, 7, 5].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
+                sheet.Cells[1, 1, 7, 5].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
+                sheet.Cells[1, 1, 7, 5].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
+                sheet.Cells[1, 1, 7, 5].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
 
                 DisplayMeal(sheet);
 
