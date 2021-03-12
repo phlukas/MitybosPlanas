@@ -33,6 +33,14 @@ namespace MitybosPlanas
             FillComboBox(comboBox1);
             FillComboBox(comboBox2);
             FillComboBox(comboBox3);
+            FillComboBox(comboBox_Copy);
+            FillComboBox(comboBox1_Copy);
+            FillComboBox(comboBox2_Copy);
+            FillComboBox(comboBox3_Copy);
+            FillComboBox(comboBox_Copy1);
+            FillComboBox(comboBox1_Copy1);
+            FillComboBox(comboBox2_Copy1);
+            FillComboBox(comboBox3_Copy1);
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -67,7 +75,7 @@ namespace MitybosPlanas
                 sheet.Cells["D1"].Value = "Penktadienis, Šeštadienis";
                 sheet.Cells["E1"].Value = "Sekmadienis, Pirmadienis";
 
-                sheet.Column(1).Width = 8;
+                sheet.Column(1).Width = 9;
                 sheet.Column(2).Width = 18;
                 sheet.Column(3).Width = 18;
                 sheet.Column(4).Width = 18;
@@ -95,7 +103,7 @@ namespace MitybosPlanas
                 {
                     MessageBox.Show("Uždarykite excel dokumentą", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                else if (e.Source == "System.IO.FileSystem") //pakeisti
+                else if (e.Message == "Object reference not set to an instance of an object.")
                 {
                     MessageBox.Show("Nepasirinkti visi patiekalai", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
@@ -108,14 +116,77 @@ namespace MitybosPlanas
 
         private void DisplayMeal(ExcelWorksheet sheet)
         {
-            Recipe recipe = GetRecipe(comboBox.Text);
+            try
+            {
+                Recipe recipe = GetRecipe(comboBox.Text);
 
-            sheet.Cells[2, 1].Value = "Pusryčiai";
-            sheet.Cells[4, 1].Value = "Pietūs";
-            sheet.Cells[6, 1].Value = "Vakarienė";
+                sheet.Cells[2, 1].Value = "Pusryčiai";
+                sheet.Cells[4, 1].Value = "Pietūs";
+                sheet.Cells[6, 1].Value = "Vakarienė";
 
-            sheet.Cells[2, 2].Value = recipe.Title;
-            sheet.Cells[3, 2].Value = recipe.Title;
+                //Pusryčiai
+                sheet.Cells[2, 2].Value = recipe.Title;
+                sheet.Cells[3, 2].Value = recipe.Ingredients;
+
+                recipe = GetRecipe(comboBox1.Text);
+
+                sheet.Cells[2, 3].Value = recipe.Title;
+                sheet.Cells[3, 3].Value = recipe.Ingredients;
+
+                recipe = GetRecipe(comboBox2.Text);
+
+                sheet.Cells[2, 4].Value = recipe.Title;
+                sheet.Cells[3, 4].Value = recipe.Ingredients;
+
+                recipe = GetRecipe(comboBox3.Text);
+
+                sheet.Cells[2, 5].Value = recipe.Title;
+                sheet.Cells[3, 5].Value = recipe.Ingredients;
+
+                //Pietūs
+                recipe = GetRecipe(comboBox_Copy.Text);
+                sheet.Cells[4, 2].Value = recipe.Title;
+                sheet.Cells[5, 2].Value = recipe.Ingredients;
+
+                recipe = GetRecipe(comboBox1_Copy.Text);
+
+                sheet.Cells[4, 3].Value = recipe.Title;
+                sheet.Cells[5, 3].Value = recipe.Ingredients;
+
+                recipe = GetRecipe(comboBox2_Copy.Text);
+
+                sheet.Cells[4, 4].Value = recipe.Title;
+                sheet.Cells[5, 4].Value = recipe.Ingredients;
+
+                recipe = GetRecipe(comboBox3_Copy.Text);
+
+                sheet.Cells[4, 5].Value = recipe.Title;
+                sheet.Cells[5, 5].Value = recipe.Ingredients;
+
+                //Vakarienė
+                recipe = GetRecipe(comboBox_Copy1.Text);
+                sheet.Cells[6, 2].Value = recipe.Title;
+                sheet.Cells[7, 2].Value = recipe.Ingredients;
+
+                recipe = GetRecipe(comboBox1_Copy1.Text);
+
+                sheet.Cells[6, 3].Value = recipe.Title;
+                sheet.Cells[7, 3].Value = recipe.Ingredients;
+
+                recipe = GetRecipe(comboBox2_Copy1.Text);
+
+                sheet.Cells[6, 4].Value = recipe.Title;
+                sheet.Cells[7, 4].Value = recipe.Ingredients;
+
+                recipe = GetRecipe(comboBox3_Copy1.Text);
+
+                sheet.Cells[6, 5].Value = recipe.Title;
+                sheet.Cells[7, 5].Value = recipe.Ingredients;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private void FillComboBox(ComboBox box)

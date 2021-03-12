@@ -21,6 +21,7 @@ namespace MitybosPlanas
                     sb.Append("\n");
                     line = sr.ReadLine();
                 }
+                line = sr.ReadLine();
                 while (line != null)
                 {
                     sb2.Append(line);
