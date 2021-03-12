@@ -7,11 +7,13 @@ namespace MitybosPlanas
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        private List<String> ingredients = new List<string>();
+        public string Ingredients { get; set; }
 
         public Recipe(string filePath)
         {
-            Description = InOut.ReadRecipe(filePath, ingredients);
+            string ingredients;
+            Description = InOut.ReadRecipe(filePath, out ingredients);
+            Ingredients = ingredients;
             SetTitle(filePath);
         }
 
@@ -21,16 +23,6 @@ namespace MitybosPlanas
             filePath = filePath.Remove(0, titleStart + 1);
             int titleEnd = filePath.LastIndexOf(".");
             Title = filePath.Remove(titleEnd);
-        }
-
-        public String GetIngredient(int i)
-        {
-            return ingredients[i];
-        }
-
-        public int IngredientsCount()
-        {
-            return ingredients.Count;
         }
     }
 }

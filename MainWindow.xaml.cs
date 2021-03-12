@@ -95,6 +95,10 @@ namespace MitybosPlanas
                 {
                     MessageBox.Show("Uždarykite excel dokumentą", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                else if (e.Source == "System.IO.FileSystem") //pakeisti
+                {
+                    MessageBox.Show("Nepasirinkti visi patiekalai", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
                 else
                 {
                     throw;
@@ -104,7 +108,14 @@ namespace MitybosPlanas
 
         private void DisplayMeal(ExcelWorksheet sheet)
         {
+            Recipe recipe = GetRecipe(comboBox.Text);
 
+            sheet.Cells[2, 1].Value = "Pusryčiai";
+            sheet.Cells[4, 1].Value = "Pietūs";
+            sheet.Cells[6, 1].Value = "Vakarienė";
+
+            sheet.Cells[2, 2].Value = recipe.Title;
+            sheet.Cells[3, 2].Value = recipe.Title;
         }
 
         private void FillComboBox(ComboBox box)
@@ -123,6 +134,18 @@ namespace MitybosPlanas
             {
                 recipes.Add(new Recipe(path));
             }
+        }
+
+        private Recipe GetRecipe(string title)
+        {
+            foreach (Recipe recipe in recipes)
+            {
+                if (recipe.Title == title)
+                {
+                    return recipe;
+                }
+            }
+            return null;
         }
     }
 }

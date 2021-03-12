@@ -7,9 +7,10 @@ namespace MitybosPlanas
 {
     static class InOut
     {
-        public static string ReadRecipe(string path, List<string> ingredients)
+        public static string ReadRecipe(string path, out string ingredients)
         {
             StringBuilder sb = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
 
             using (StreamReader sr = new StreamReader(path))
             {
@@ -22,9 +23,11 @@ namespace MitybosPlanas
                 }
                 while (line != null)
                 {
-                    ingredients.Add(line);
+                    sb2.Append(line);
+                    sb2.Append("\n");
                     line = sr.ReadLine();
                 }
+                ingredients = sb2.ToString();
             }
 
             return sb.ToString();
