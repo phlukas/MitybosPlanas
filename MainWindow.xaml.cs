@@ -36,9 +36,9 @@ namespace MitybosPlanas
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            if(textBox.Text.Length > 1 && textBox.Text.Length <= 50)
+            if(textBox.Text.Length > 0 && textBox.Text.Length <= 50)
             {
-                CreateExcel(textBox.Text);
+                CreateExcel(textBox.Text + ".xlsx");
             }
             else
             {
@@ -48,22 +48,47 @@ namespace MitybosPlanas
 
         private void CreateExcel(string fileName)
         {
-            FileInfo savePath = new FileInfo(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName));
-            File.Delete(savePath.FullName);
-            using var package = new ExcelPackage(savePath);
-            var sheet = package.Workbook.Worksheets.Add("Planas");
+            try
+            {
+                FileInfo savePath = new FileInfo(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mitybos planai", fileName));
+                File.Delete(savePath.FullName);
+                using var package = new ExcelPackage(savePath);
+                var sheet = package.Workbook.Worksheets.Add("Planas");
 
-            sheet.Cells["A1"].Value = "Valgiai";
-            sheet.Cells["B1"].Value = "Pirmadienis, Antradienis";
-            sheet.Cells["C1"].Value = "Trečiadienis, Ketvirtadienis";
-            sheet.Cells["D1"].Value = "Penktadienis, Šeštadienis";
-            sheet.Cells["E1"].Value = "Sekmadienis, Pirmadienis";
+                sheet.SelectedRange[1, 1, 100, 5].Style.Font.Size = 10;
+                sheet.SelectedRange[1, 1, 100, 5].Style.WrapText = true;
+                sheet.SelectedRange[1, 1, 100, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                sheet.SelectedRange[1, 1, 100, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
 
-            sheet.Column(1).Width = 10;
+                sheet.Cells["A1"].Value = "Valgiai";
+                sheet.Cells["B1"].Value = "Pirmadienis, Antradienis";
+                sheet.Cells["C1"].Value = "Trečiadienis, Ketvirtadienis";
+                sheet.Cells["D1"].Value = "Penktadienis, Šeštadienis";
+                sheet.Cells["E1"].Value = "Sekmadienis, Pirmadienis";
 
-            package.Save();
+                sheet.Column(1).Width = 10;
+                sheet.Column(2).Width = 25;
+                sheet.Column(3).Width = 25;
+                sheet.Column(4).Width = 25;
+                sheet.Column(5).Width = 25;
 
-            MessageBox.Show("Dokumentas sukurtas sėkmingai", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+                package.Save();
+
+                MessageBox.Show("Dokumentas sukurtas sėkmingai", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception e)
+            {
+                if (e.Source == "System.IO.FileSystem")
+                {
+                    MessageBox.Show("Uždarykite excel dokumentą", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         private void FillComboBox(ComboBox box)
