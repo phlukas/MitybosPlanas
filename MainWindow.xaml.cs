@@ -196,7 +196,7 @@ namespace MitybosPlanas
             {
                 options.Add(recipe.Title);
             }
-            box.ItemsSource = options;
+            box.ItemsSource = recipes;
         }
         private void ReadRecipes(string folderName)
         {

@@ -29,31 +29,115 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <ComboBox x:Name="comboBox" Height="20" Margin="0,64,0,0" VerticalAlignment="Top" AutomationProperties.HelpText="Abc" RenderTransformOrigin="0.49,2.352" Grid.Column="1" HorizontalAlignment="Center" Width="150" Grid.Row="1"/>
-        <ComboBox x:Name="comboBox1" HorizontalAlignment="Center" Margin="0,131,0,0" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="1" Grid.Row="1"/>
+        <ComboBox x:Name="comboBox" Height="20" Margin="0,64,0,0" VerticalAlignment="Top" AutomationProperties.HelpText="Abc" RenderTransformOrigin="0.49,2.352" Grid.Column="1" HorizontalAlignment="Center" Width="150" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox x:Name="comboBox1" HorizontalAlignment="Center" Margin="0,131,0,0" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="1" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Label x:Name="label" Content="Pirmadienis, Antradienis" HorizontalAlignment="Center" Height="30" Margin="0,31,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1" Grid.Row="1"/>
         <Label x:Name="label1" Content="Trečiadienis, Ketvirtadienis" HorizontalAlignment="Center" Height="30" Margin="0,99,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1" Grid.Row="1"/>
         <Label x:Name="label2" Content="Penktadienis, Šeštadienis" HorizontalAlignment="Center" Height="30" Margin="0,162,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1" Grid.Row="1"/>
-        <ComboBox x:Name="comboBox2" HorizontalAlignment="Center" Height="20" Margin="0,196,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1" Grid.Row="1"/>
+        <ComboBox x:Name="comboBox2" HorizontalAlignment="Center" Height="20" Margin="0,196,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Label x:Name="label3" Content="Sekmadienis, Pirmadienis" HorizontalAlignment="Center" Height="30" Margin="0,236,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1" Grid.Row="1"/>
-        <ComboBox x:Name="comboBox3" HorizontalAlignment="Center" Height="20" Margin="0,266,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1" Grid.Row="1"/>
+        <ComboBox x:Name="comboBox3" HorizontalAlignment="Center" Height="20" Margin="0,266,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Label x:Name="label4" Content="Label" Grid.Column="3" HorizontalAlignment="Left" Height="0" Margin="11,2,0,0" VerticalAlignment="Top" Width="1" Grid.Row="2"/>
-        <ComboBox x:Name="comboBox_Copy" Height="20" Margin="0,64,0,0" VerticalAlignment="Top" AutomationProperties.HelpText="Abc" RenderTransformOrigin="0.49,2.352" HorizontalAlignment="Center" Width="150" Grid.Column="2" Grid.Row="1"/>
-        <ComboBox x:Name="comboBox1_Copy" HorizontalAlignment="Center" Margin="0,131,0,0" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="2" Grid.Row="1"/>
+        <ComboBox x:Name="comboBox_Copy" Height="20" Margin="0,64,0,0" VerticalAlignment="Top" AutomationProperties.HelpText="Abc" RenderTransformOrigin="0.49,2.352" HorizontalAlignment="Center" Width="150" Grid.Column="2" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox x:Name="comboBox1_Copy" HorizontalAlignment="Center" Margin="0,131,0,0" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="2" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Label x:Name="label_Copy" Content="Pirmadienis, Antradienis" HorizontalAlignment="Center" Height="30" Margin="0,31,0,0" VerticalAlignment="Top" Width="150" Grid.Column="2" Grid.Row="1"/>
         <Label x:Name="label1_Copy" Content="Trečiadienis, Ketvirtadienis" HorizontalAlignment="Center" Height="30" Margin="0,99,0,0" VerticalAlignment="Top" Width="150" Grid.Column="2" Grid.Row="1"/>
         <Label x:Name="label2_Copy" Content="Penktadienis, Šeštadienis" HorizontalAlignment="Center" Height="30" Margin="0,162,0,0" VerticalAlignment="Top" Width="150" Grid.Column="2" Grid.Row="1"/>
-        <ComboBox x:Name="comboBox2_Copy" HorizontalAlignment="Center" Height="20" Margin="0,196,0,0" VerticalAlignment="Top" Width="150" Grid.Column="2" Grid.Row="1"/>
+        <ComboBox x:Name="comboBox2_Copy" HorizontalAlignment="Center" Height="20" Margin="0,196,0,0" VerticalAlignment="Top" Width="150" Grid.Column="2" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Label x:Name="label3_Copy" Content="Sekmadienis, Pirmadienis" HorizontalAlignment="Center" Height="30" Margin="0,236,0,0" VerticalAlignment="Top" Width="150" Grid.Column="2" Grid.Row="1"/>
-        <ComboBox x:Name="comboBox3_Copy" HorizontalAlignment="Center" Height="20" Margin="0,266,0,0" VerticalAlignment="Top" Width="150" Grid.Column="2" Grid.Row="1"/>
-        <ComboBox x:Name="comboBox_Copy1" Height="20" Margin="0,64,0,0" VerticalAlignment="Top" AutomationProperties.HelpText="Abc" RenderTransformOrigin="0.49,2.352" HorizontalAlignment="Center" Width="150" Grid.Column="3" Grid.Row="1"/>
-        <ComboBox x:Name="comboBox1_Copy1" HorizontalAlignment="Center" Margin="0,131,0,0" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="3" Grid.Row="1"/>
+        <ComboBox x:Name="comboBox3_Copy" HorizontalAlignment="Center" Height="20" Margin="0,266,0,0" VerticalAlignment="Top" Width="150" Grid.Column="2" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox x:Name="comboBox_Copy1" Height="20" Margin="0,64,0,0" VerticalAlignment="Top" AutomationProperties.HelpText="Abc" RenderTransformOrigin="0.49,2.352" HorizontalAlignment="Center" Width="150" Grid.Column="3" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox x:Name="comboBox1_Copy1" HorizontalAlignment="Center" Margin="0,131,0,0" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="3" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Label x:Name="label_Copy1" Content="Pirmadienis, Antradienis" HorizontalAlignment="Center" Height="30" Margin="0,31,0,0" VerticalAlignment="Top" Width="150" Grid.Column="3" Grid.Row="1"/>
         <Label x:Name="label1_Copy1" Content="Trečiadienis, Ketvirtadienis" HorizontalAlignment="Center" Height="30" Margin="0,99,0,0" VerticalAlignment="Top" Width="150" Grid.Column="3" Grid.Row="1"/>
         <Label x:Name="label2_Copy1" Content="Penktadienis, Šeštadienis" HorizontalAlignment="Center" Height="30" Margin="0,162,0,0" VerticalAlignment="Top" Width="150" Grid.Column="3" Grid.Row="1"/>
-        <ComboBox x:Name="comboBox2_Copy1" HorizontalAlignment="Center" Height="20" Margin="0,196,0,0" VerticalAlignment="Top" Width="150" Grid.Column="3" Grid.Row="1"/>
+        <ComboBox x:Name="comboBox2_Copy1" HorizontalAlignment="Center" Height="20" Margin="0,196,0,0" VerticalAlignment="Top" Width="150" Grid.Column="3" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Label x:Name="label3_Copy1" Content="Sekmadienis, Pirmadienis" HorizontalAlignment="Center" Height="30" Margin="0,236,0,0" VerticalAlignment="Top" Width="150" Grid.Column="3" Grid.Row="1"/>
-        <ComboBox x:Name="comboBox3_Copy1" HorizontalAlignment="Center" Height="20" Margin="0,266,0,0" VerticalAlignment="Top" Width="150" Grid.Column="3" Grid.Row="1"/>
+        <ComboBox x:Name="comboBox3_Copy1" HorizontalAlignment="Center" Height="20" Margin="0,266,0,0" VerticalAlignment="Top" Width="150" Grid.Column="3" Grid.Row="1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Content="{Binding Title}" ToolTip="{Binding Description}" >
+                    </ListBoxItem>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <TextBox x:Name="textBox" Grid.Column="3" HorizontalAlignment="Center" Height="18" TextWrapping="Wrap" VerticalAlignment="Center" Width="200"/>
         <Label x:Name="label5" Content="Mitybos plano pavadinimas" Grid.Column="3" HorizontalAlignment="Center" Height="30" VerticalAlignment="Top" Width="200"/>
         <Label x:Name="label_Copy2" Content="Pusryčiai" HorizontalAlignment="Center" Height="30" Margin="0,1,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1" Grid.Row="1" FontWeight="Bold" FontSize="14"/>
