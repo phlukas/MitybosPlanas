@@ -18,7 +18,7 @@ namespace MitybosPlanas
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             InitializeComponent();
             ReadRecipes("Receptai");
-            FillComboBox();
+            FillComboBoxes();
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -37,7 +37,7 @@ namespace MitybosPlanas
         {
             try
             {
-                FileInfo savePath = new FileInfo(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mitybos planai", fileName));
+                FileInfo savePath = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mitybos planai", fileName));
                 File.Delete(savePath.FullName);
                 using var package = new ExcelPackage(savePath);
                 var sheet = package.Workbook.Worksheets.Add("Planas");
@@ -47,11 +47,13 @@ namespace MitybosPlanas
                 sheet.SelectedRange[1, 1, 100, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                 sheet.SelectedRange[1, 1, 100, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
 
-                sheet.Cells["A1"].Value = "Valgiai";
-                sheet.Cells["B1"].Value = "Pirmadienis, Antradienis";
-                sheet.Cells["C1"].Value = "Trečiadienis, Ketvirtadienis";
-                sheet.Cells["D1"].Value = "Penktadienis, Šeštadienis";
-                sheet.Cells["E1"].Value = "Sekmadienis, Pirmadienis";
+                DisplayLogo(sheet);
+
+                sheet.Cells["A2"].Value = "Valgiai";
+                sheet.Cells["B2"].Value = "Pirmadienis, Antradienis";
+                sheet.Cells["C2"].Value = "Trečiadienis, Ketvirtadienis";
+                sheet.Cells["D2"].Value = "Penktadienis, Šeštadienis";
+                sheet.Cells["E2"].Value = "Sekmadienis, Pirmadienis";
 
                 sheet.Column(1).Width = 9;
                 sheet.Column(2).Width = 18;
@@ -59,15 +61,15 @@ namespace MitybosPlanas
                 sheet.Column(4).Width = 18;
                 sheet.Column(5).Width = 18;
 
-                sheet.Cells[1, 1, 1, 5].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                sheet.Cells[1, 1, 1, 5].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
-                sheet.Cells[2, 1, 7, 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                sheet.Cells[2, 1, 7, 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
+                sheet.Cells[2, 1, 2, 5].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                sheet.Cells[2, 1, 2, 5].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
+                sheet.Cells[3, 1, 8, 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                sheet.Cells[3, 1, 8, 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
 
-                sheet.Cells[1, 1, 7, 5].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
-                sheet.Cells[1, 1, 7, 5].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
-                sheet.Cells[1, 1, 7, 5].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
-                sheet.Cells[1, 1, 7, 5].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
 
                 DisplayMeal(sheet);
 
@@ -92,74 +94,83 @@ namespace MitybosPlanas
             }
         }
 
+        private void DisplayLogo(ExcelWorksheet sheet)
+        {
+            FileInfo logo = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logo.PNG"));
+            OfficeOpenXml.Drawing.ExcelPicture pic = sheet.Drawings.AddPicture("logo", logo);
+            sheet.SelectedRange[1, 1, 1, 5].Merge = true;
+            sheet.Row(1).Height = 140;
+            pic.SetPosition(0, 0);
+        }
+
         private void DisplayMeal(ExcelWorksheet sheet)
         {
             try
             {
                 Recipe recipe = (Recipe)comboBox.SelectedItem;
 
-                sheet.Cells[2, 1].Value = "Pusryčiai";
-                sheet.Cells[4, 1].Value = "Pietūs";
-                sheet.Cells[6, 1].Value = "Vakarienė";
+                sheet.Cells[3, 1].Value = "Pusryčiai";
+                sheet.Cells[5, 1].Value = "Pietūs";
+                sheet.Cells[7, 1].Value = "Vakarienė";
 
                 //Pusryčiai
-                sheet.Cells[2, 2].Value = recipe.Title;
-                sheet.Cells[3, 2].Value = recipe.Ingredients;
+                sheet.Cells[3, 2].Value = recipe.Title;
+                sheet.Cells[4, 2].Value = recipe.Ingredients;
 
                 recipe = (Recipe)comboBox1.SelectedItem;
 
-                sheet.Cells[2, 3].Value = recipe.Title;
-                sheet.Cells[3, 3].Value = recipe.Ingredients;
+                sheet.Cells[3, 3].Value = recipe.Title;
+                sheet.Cells[4, 3].Value = recipe.Ingredients;
 
                 recipe = (Recipe)comboBox2.SelectedItem;
 
-                sheet.Cells[2, 4].Value = recipe.Title;
-                sheet.Cells[3, 4].Value = recipe.Ingredients;
+                sheet.Cells[3, 4].Value = recipe.Title;
+                sheet.Cells[4, 4].Value = recipe.Ingredients;
 
                 recipe = (Recipe)comboBox3.SelectedItem;
 
-                sheet.Cells[2, 5].Value = recipe.Title;
-                sheet.Cells[3, 5].Value = recipe.Ingredients;
+                sheet.Cells[3, 5].Value = recipe.Title;
+                sheet.Cells[4, 5].Value = recipe.Ingredients;
 
                 //Pietūs
                 recipe = (Recipe)comboBox_Copy.SelectedItem;
-                sheet.Cells[4, 2].Value = recipe.Title;
-                sheet.Cells[5, 2].Value = recipe.Ingredients;
+                sheet.Cells[5, 2].Value = recipe.Title;
+                sheet.Cells[6, 2].Value = recipe.Ingredients;
 
                 recipe = (Recipe)comboBox1_Copy.SelectedItem;
 
-                sheet.Cells[4, 3].Value = recipe.Title;
-                sheet.Cells[5, 3].Value = recipe.Ingredients;
+                sheet.Cells[5, 3].Value = recipe.Title;
+                sheet.Cells[6, 3].Value = recipe.Ingredients;
 
                 recipe = (Recipe)comboBox2_Copy.SelectedItem;
 
-                sheet.Cells[4, 4].Value = recipe.Title;
-                sheet.Cells[5, 4].Value = recipe.Ingredients;
+                sheet.Cells[5, 4].Value = recipe.Title;
+                sheet.Cells[6, 4].Value = recipe.Ingredients;
 
                 recipe = (Recipe)comboBox3_Copy.SelectedItem;
 
-                sheet.Cells[4, 5].Value = recipe.Title;
-                sheet.Cells[5, 5].Value = recipe.Ingredients;
+                sheet.Cells[5, 5].Value = recipe.Title;
+                sheet.Cells[6, 5].Value = recipe.Ingredients;
 
                 //Vakarienė
                 recipe = (Recipe)comboBox_Copy1.SelectedItem;
-                sheet.Cells[6, 2].Value = recipe.Title;
-                sheet.Cells[7, 2].Value = recipe.Ingredients;
+                sheet.Cells[7, 2].Value = recipe.Title;
+                sheet.Cells[8, 2].Value = recipe.Ingredients;
 
                 recipe = (Recipe)comboBox1_Copy1.SelectedItem;
 
-                sheet.Cells[6, 3].Value = recipe.Title;
-                sheet.Cells[7, 3].Value = recipe.Ingredients;
+                sheet.Cells[7, 3].Value = recipe.Title;
+                sheet.Cells[8, 3].Value = recipe.Ingredients;
 
                 recipe = (Recipe)comboBox2_Copy1.SelectedItem;
 
-                sheet.Cells[6, 4].Value = recipe.Title;
-                sheet.Cells[7, 4].Value = recipe.Ingredients;
+                sheet.Cells[7, 4].Value = recipe.Title;
+                sheet.Cells[8, 4].Value = recipe.Ingredients;
 
                 recipe = (Recipe)comboBox3_Copy1.SelectedItem;
 
-                sheet.Cells[6, 5].Value = recipe.Title;
-                sheet.Cells[7, 5].Value = recipe.Ingredients;
+                sheet.Cells[7, 5].Value = recipe.Title;
+                sheet.Cells[8, 5].Value = recipe.Ingredients;
             }
             catch (Exception)
             {
@@ -167,7 +178,7 @@ namespace MitybosPlanas
             }
         }
 
-        private void FillComboBox()
+        private void FillComboBoxes()
         {
             comboBox.ItemsSource = recipes;
             comboBox1.ItemsSource = recipes;
@@ -184,23 +195,11 @@ namespace MitybosPlanas
         }
         private void ReadRecipes(string folderName)
         {
-            string[] paths = Directory.GetFiles(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName));
+            string[] paths = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName));
             foreach (string path in paths)
             {
                 recipes.Add(new Recipe(path));
             }
-        }
-
-        private Recipe GetRecipe(string title)
-        {
-            foreach (Recipe recipe in recipes)
-            {
-                if (recipe.Title == title)
-                {
-                    return recipe;
-                }
-            }
-            return null;
         }
     }
 }
