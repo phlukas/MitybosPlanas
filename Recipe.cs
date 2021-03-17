@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MitybosPlanas
+﻿namespace MitybosPlanas
 {
     class Recipe
     {
