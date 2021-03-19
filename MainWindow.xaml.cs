@@ -201,19 +201,32 @@ namespace MitybosPlanas
 
         private void DisplayRecipes(List<Recipe> selectedRecipes, int row, ExcelWorksheet sheet)
         {
+            //string text = InOut.ReadLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UŽKANDŽIAI.txt"));
+            //sheet.Cells[row, 1, row, 5].Merge = true;
+            //sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+            //sheet.Cells[row, 1, row, 5].Value = text;
+            //sheet.Row(row).Height = MeasureTextHeight(sheet.Cells[row, 1, row, 5].Text, sheet.Cells[row, 1, row, 5].Style.Font, 5, 0);
+            //row++;
+
+            sheet.Cells[row, 1, row, 5].Merge = true;
+            sheet.Cells[row, 1, row, 5].Value = "Receptai";
+            sheet.Cells[row, 1, row, 5].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
+            row++;
+
             foreach (Recipe recipe in selectedRecipes)
             {
                 if (recipe.Description.Length > 1)
                 {
                     sheet.Cells[row, 1, row, 5].Merge = true;
+                    sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[row, 1, row, 5].Value = recipe.Title + " - " + recipe.Description;
-                    sheet.Row(row).Height = MeasureTextHeight(sheet.Cells[row, 1, row, 5].Text, sheet.Cells[row, 1, row, 5].Style.Font, 5);
+                    sheet.Row(row).Height = MeasureTextHeight(sheet.Cells[row, 1, row, 5].Text, sheet.Cells[row, 1, row, 5].Style.Font, 5, 10);
                     row++;
                 }
             }
         }
 
-        private double MeasureTextHeight(string text, ExcelFont font, double width)
+        private double MeasureTextHeight(string text, ExcelFont font, double width, int bonus)
         {
             var bitmap = new Bitmap(1, 1);
             var graphics = Graphics.FromImage(bitmap);
@@ -224,7 +237,7 @@ namespace MitybosPlanas
             var size = graphics.MeasureString(text, drawingFont, pixelWidth, new StringFormat { FormatFlags = StringFormatFlags.MeasureTrailingSpaces });
 
             //72 DPI and 96 points per inch.  Excel height in points with max of 409 per Excel requirements.
-            return Math.Min(Convert.ToDouble(size.Height) * 72 / 96, 409) + 10;
+            return Math.Min(Convert.ToDouble(size.Height) * 72 / 96, 409) + bonus;
         }
 
         private void AddRecipeIfUnique(List<Recipe> list, Recipe recipe)
