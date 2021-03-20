@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -14,13 +15,18 @@ namespace MitybosPlanas
     public partial class MainWindow : Window
     {
         private List<Recipe> recipes = new List<Recipe>();
+        private List<Recipe> recipesPav = new List<Recipe>();
+        private List<Recipe> recipesPries = new List<Recipe>();
 
         public MainWindow()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             InitializeComponent();
-            ReadRecipes("Receptai");
+            ReadRecipes("Receptai", recipes);
+            ReadRecipes("Pavakariai", recipesPav);
+            ReadRecipes("Priešpiečiai", recipesPries);
             FillComboBoxes();
+            
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -41,7 +47,7 @@ namespace MitybosPlanas
             {
                 FileInfo savePath = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mitybos planai", fileName));
                 File.Delete(savePath.FullName);
-                using var package = new ExcelPackage(savePath);
+                using ExcelPackage package = new ExcelPackage(savePath);
                 var sheet = package.Workbook.Worksheets.Add("Planas");
 
                 sheet.SelectedRange[1, 1, 100, 5].Style.Font.Size = 10;
@@ -73,7 +79,7 @@ namespace MitybosPlanas
                 sheet.Cells[2, 1, 8, 5].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
                 sheet.Cells[2, 1, 8, 5].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
 
-                DisplayMeal(sheet);
+                DisplayMeal(sheet, package);
 
                 package.Save();
 
@@ -106,7 +112,7 @@ namespace MitybosPlanas
             pic.SetPosition(0, 0);
         }
 
-        private void DisplayMeal(ExcelWorksheet sheet)
+        private void DisplayMeal(ExcelWorksheet sheet, ExcelPackage package)
         {
             try
             {
@@ -191,7 +197,7 @@ namespace MitybosPlanas
                 sheet.Cells[7, 5].Value = recipe.Title;
                 sheet.Cells[8, 5].Value = recipe.Ingredients;
 
-                DisplayRecipes(selectedRecipes, 9, sheet);
+                DisplayRecipes(selectedRecipes, 9, sheet, package);
             }
             catch (Exception)
             {
@@ -199,18 +205,45 @@ namespace MitybosPlanas
             }
         }
 
-        private void DisplayRecipes(List<Recipe> selectedRecipes, int row, ExcelWorksheet sheet)
+        private void DisplayRecipes(List<Recipe> selectedRecipes, int row, ExcelWorksheet sheet, ExcelPackage package)
         {
-            //string text = InOut.ReadLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UŽKANDŽIAI.txt"));
-            //sheet.Cells[row, 1, row, 5].Merge = true;
-            //sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-            //sheet.Cells[row, 1, row, 5].Value = text;
-            //sheet.Row(row).Height = MeasureTextHeight(sheet.Cells[row, 1, row, 5].Text, sheet.Cells[row, 1, row, 5].Style.Font, 5, 0);
-            //row++;
+            //Priešpiečiai
+            sheet.Cells[row, 1, row, 5].Merge = true;
+            sheet.Cells[row, 1, row, 5].Value = "Priešpiečiai (kas dieną pasirinkite vieną)";
+            sheet.Cells[row, 1, row, 5].Style.Border.Top.Style = ExcelBorderStyle.Thick;
+            sheet.Cells[row, 1, row, 5].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+            row++;
 
+            foreach (Recipe recipe in recipesPries)
+            {
+                sheet.Cells[row, 1, row, 5].Merge = true;
+                sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                sheet.Cells[row, 1, row, 5].Value = recipe.Title + "\n\n" + recipe.Ingredients;
+                sheet.Row(row).Height = recipe.IngredientsHeight();
+                row++;
+            }
+
+            //Pavakariai
+            sheet.Cells[row, 1, row, 5].Merge = true;
+            sheet.Cells[row, 1, row, 5].Value = "Pavakariai (kas dieną pasirinkite vieną)";
+            sheet.Cells[row, 1, row, 5].Style.Border.Top.Style = ExcelBorderStyle.Thick;
+            sheet.Cells[row, 1, row, 5].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+            row++;
+
+            foreach (Recipe recipe in recipesPav)
+            {
+                sheet.Cells[row, 1, row, 5].Merge = true;
+                sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                sheet.Cells[row, 1, row, 5].Value = recipe.Title + "\n\n" + recipe.Ingredients;
+                sheet.Row(row).Height = recipe.IngredientsHeight();
+                row++;
+            }
+
+            //Visi receptai išvardijami
             sheet.Cells[row, 1, row, 5].Merge = true;
             sheet.Cells[row, 1, row, 5].Value = "Receptai";
-            sheet.Cells[row, 1, row, 5].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
+            sheet.Cells[row, 1, row, 5].Style.Border.Top.Style = ExcelBorderStyle.Thick;
+            sheet.Cells[row, 1, row, 5].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
             row++;
 
             foreach (Recipe recipe in selectedRecipes)
@@ -218,26 +251,36 @@ namespace MitybosPlanas
                 if (recipe.Description.Length > 1)
                 {
                     sheet.Cells[row, 1, row, 5].Merge = true;
-                    sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     sheet.Cells[row, 1, row, 5].Value = recipe.Title + " - " + recipe.Description;
-                    sheet.Row(row).Height = MeasureTextHeight(sheet.Cells[row, 1, row, 5].Text, sheet.Cells[row, 1, row, 5].Style.Font, 5, 10);
+                    sheet.Row(row).Height = recipe.DescriptionHeight();
                     row++;
                 }
             }
-        }
 
-        private double MeasureTextHeight(string text, ExcelFont font, double width, int bonus)
-        {
-            var bitmap = new Bitmap(1, 1);
-            var graphics = Graphics.FromImage(bitmap);
+            foreach (Recipe recipe in recipesPries)
+            {
+                if (recipe.Description.Length > 1)
+                {
+                    sheet.Cells[row, 1, row, 5].Merge = true;
+                    sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    sheet.Cells[row, 1, row, 5].Value = recipe.Title + " - " + recipe.Description;
+                    sheet.Row(row).Height = recipe.DescriptionHeight();
+                    row++;
+                }
+            }
 
-            var pixelWidth = Convert.ToInt32(width * 7);  //7 pixels per excel column width
-            var fontSize = font.Size * 1.01f;
-            var drawingFont = new Font(font.Name, fontSize);
-            var size = graphics.MeasureString(text, drawingFont, pixelWidth, new StringFormat { FormatFlags = StringFormatFlags.MeasureTrailingSpaces });
-
-            //72 DPI and 96 points per inch.  Excel height in points with max of 409 per Excel requirements.
-            return Math.Min(Convert.ToDouble(size.Height) * 72 / 96, 409) + bonus;
+            foreach (Recipe recipe in recipesPav)
+            {
+                if (recipe.Description.Length > 1)
+                {
+                    sheet.Cells[row, 1, row, 5].Merge = true;
+                    sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    sheet.Cells[row, 1, row, 5].Value = recipe.Title + " - " + recipe.Description;
+                    sheet.Row(row).Height = recipe.DescriptionHeight();
+                    row++;
+                }
+            }
         }
 
         private void AddRecipeIfUnique(List<Recipe> list, Recipe recipe)
@@ -261,12 +304,12 @@ namespace MitybosPlanas
             comboBox2_Copy1.ItemsSource = recipes;
             comboBox3_Copy1.ItemsSource = recipes;
         }
-        private void ReadRecipes(string folderName)
+        private void ReadRecipes(string folderName, List<Recipe> list)
         {
             string[] paths = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName));
             foreach (string path in paths)
             {
-                recipes.Add(new Recipe(path));
+                list.Add(new Recipe(path));
             }
         }
     }
