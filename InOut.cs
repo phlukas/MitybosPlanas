@@ -1,7 +1,5 @@
 ﻿using System.Text;
 using System.IO;
-using System.Collections.Generic;
-using System;
 
 namespace MitybosPlanas
 {
@@ -32,14 +30,6 @@ namespace MitybosPlanas
             }
 
             return sb.ToString();
-        }
-
-        public static string ReadLines(string path)
-        {
-            using (StreamReader sr = new StreamReader(path))
-            {
-                return sr.ReadToEnd();
-            }
         }
     }
 }

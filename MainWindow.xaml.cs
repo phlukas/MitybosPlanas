@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -22,11 +20,12 @@ namespace MitybosPlanas
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             InitializeComponent();
-            ReadRecipes("Receptai", recipes);
-            ReadRecipes("Pavakariai", recipesPav);
-            ReadRecipes("Priešpiečiai", recipesPries);
+            ReadRecipes(@"Receptai\Pusryčiai", recipes, "Pusryčiai");
+            ReadRecipes(@"Receptai\Pietūs", recipes, "Pietūs");
+            ReadRecipes(@"Receptai\Vakarienė", recipes, "Vakarienė");
+            ReadRecipes(@"Receptai\Pavakariai", recipesPav);
+            ReadRecipes(@"Receptai\Priešpiečiai", recipesPries);
             FillComboBoxes();
-            
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -52,8 +51,8 @@ namespace MitybosPlanas
 
                 sheet.SelectedRange[1, 1, 100, 5].Style.Font.Size = 10;
                 sheet.SelectedRange[1, 1, 100, 5].Style.WrapText = true;
-                sheet.SelectedRange[1, 1, 100, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                sheet.SelectedRange[1, 1, 100, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                sheet.SelectedRange[1, 1, 100, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                sheet.SelectedRange[1, 1, 100, 5].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
                 DisplayLogo(sheet);
 
@@ -69,15 +68,15 @@ namespace MitybosPlanas
                 sheet.Column(4).Width = 18;
                 sheet.Column(5).Width = 18;
 
-                sheet.Cells[2, 1, 2, 5].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                sheet.Cells[2, 1, 2, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 sheet.Cells[2, 1, 2, 5].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
-                sheet.Cells[3, 1, 8, 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                sheet.Cells[3, 1, 8, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 sheet.Cells[3, 1, 8, 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
 
-                sheet.Cells[2, 1, 8, 5].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
-                sheet.Cells[2, 1, 8, 5].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
-                sheet.Cells[2, 1, 8, 5].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
-                sheet.Cells[2, 1, 8, 5].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thick;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Top.Style = ExcelBorderStyle.Thick;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Left.Style = ExcelBorderStyle.Thick;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Right.Style = ExcelBorderStyle.Thick;
 
                 DisplayMeal(sheet, package);
 
@@ -89,15 +88,15 @@ namespace MitybosPlanas
             {
                 if (e.Source == "System.IO.FileSystem")
                 {
-                    MessageBox.Show("Uždarykite excel dokumentą", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Uždarykite excel dokumentą. " + e.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else if (e.Message == "Object reference not set to an instance of an object.")
                 {
-                    MessageBox.Show("Nepasirinkti visi patiekalai", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Nepasirinkti visi patiekalai. " + e.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
-                    throw;
+                    MessageBox.Show("Nežinoma klaida. " + e.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -291,26 +290,45 @@ namespace MitybosPlanas
 
         private void FillComboBoxes()
         {
-            comboBox.ItemsSource = recipes;
-            comboBox1.ItemsSource = recipes;
-            comboBox2.ItemsSource = recipes;
-            comboBox3.ItemsSource = recipes;
-            comboBox_Copy.ItemsSource = recipes;
-            comboBox1_Copy.ItemsSource = recipes;
-            comboBox2_Copy.ItemsSource = recipes;
-            comboBox3_Copy.ItemsSource = recipes;
-            comboBox_Copy1.ItemsSource = recipes;
-            comboBox1_Copy1.ItemsSource = recipes;
-            comboBox2_Copy1.ItemsSource = recipes;
-            comboBox3_Copy1.ItemsSource = recipes;
+            List<Recipe> breakfast = FilterByType("Pusryčiai");
+            List<Recipe> lunch = FilterByType("Pietūs");
+            List<Recipe> dinner = FilterByType("Vakarienė");
+
+            comboBox.ItemsSource = breakfast;
+            comboBox1.ItemsSource = breakfast;
+            comboBox2.ItemsSource = breakfast;
+            comboBox3.ItemsSource = breakfast;
+            comboBox_Copy.ItemsSource = lunch;
+            comboBox1_Copy.ItemsSource = lunch;
+            comboBox2_Copy.ItemsSource = lunch;
+            comboBox3_Copy.ItemsSource = lunch;
+            comboBox_Copy1.ItemsSource = dinner;
+            comboBox1_Copy1.ItemsSource = dinner;
+            comboBox2_Copy1.ItemsSource = dinner;
+            comboBox3_Copy1.ItemsSource = dinner;
         }
-        private void ReadRecipes(string folderName, List<Recipe> list)
+        private void ReadRecipes(string folderName, List<Recipe> list, string type = "")
         {
             string[] paths = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName));
             foreach (string path in paths)
             {
-                list.Add(new Recipe(path));
+                list.Add(new Recipe(path, type));
             }
+        }
+
+        private List<Recipe> FilterByType(string type)
+        {
+            List<Recipe> list = new List<Recipe>();
+
+            foreach (Recipe recipe in recipes)
+            {
+                if (recipe.Type == type)
+                {
+                    list.Add(recipe);
+                }
+            }
+
+            return list;
         }
     }
 }

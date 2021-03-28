@@ -7,12 +7,14 @@ namespace MitybosPlanas
         public string Title { get; set; }
         public string Description { get; set; }
         public string Ingredients { get; set; }
+        public string Type { get; set; }
 
-        public Recipe(string filePath)
+        public Recipe(string filePath, string type)
         {
             string ingredients;
             Description = InOut.ReadRecipe(filePath, out ingredients);
             Ingredients = ingredients;
+            Type = type;
             SetTitle(filePath);
         }
 
