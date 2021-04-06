@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using OfficeOpenXml;
@@ -44,6 +45,7 @@ namespace MitybosPlanas
         {
             try
             {
+                Color headerColor = Color.FromArgb(146, 208, 80);
                 FileInfo savePath = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mitybos planai", fileName));
                 File.Delete(savePath.FullName);
                 using ExcelPackage package = new ExcelPackage(savePath);
@@ -60,7 +62,7 @@ namespace MitybosPlanas
                 sheet.Cells["B2"].Value = "Pirmadienis, Antradienis";
                 sheet.Cells["C2"].Value = "Trečiadienis, Ketvirtadienis";
                 sheet.Cells["D2"].Value = "Penktadienis, Šeštadienis";
-                sheet.Cells["E2"].Value = "Sekmadienis, Pirmadienis";
+                sheet.Cells["E2"].Value = "Sekmadienis";
 
                 sheet.Column(1).Width = 9;
                 sheet.Column(2).Width = 18;
@@ -69,14 +71,14 @@ namespace MitybosPlanas
                 sheet.Column(5).Width = 18;
 
                 sheet.Cells[2, 1, 2, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                sheet.Cells[2, 1, 2, 5].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
+                sheet.Cells[2, 1, 2, 5].Style.Fill.BackgroundColor.SetColor(headerColor);
                 sheet.Cells[3, 1, 8, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                sheet.Cells[3, 1, 8, 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
+                sheet.Cells[3, 1, 8, 1].Style.Fill.BackgroundColor.SetColor(headerColor);
 
-                sheet.Cells[2, 1, 8, 5].Style.Border.Top.Style = ExcelBorderStyle.Thick;
-                sheet.Cells[2, 1, 8, 5].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
-                sheet.Cells[2, 1, 8, 5].Style.Border.Left.Style = ExcelBorderStyle.Thick;
-                sheet.Cells[2, 1, 8, 5].Style.Border.Right.Style = ExcelBorderStyle.Thick;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                sheet.Cells[2, 1, 8, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                 DisplayMeal(sheet, package);
 
@@ -105,8 +107,9 @@ namespace MitybosPlanas
         {
             FileInfo logo = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logo.PNG"));
             OfficeOpenXml.Drawing.ExcelPicture pic = sheet.Drawings.AddPicture("logo", logo);
-            sheet.SelectedRange[1, 1, 1, 5].Merge = true;
-            sheet.Row(1).Height = 55;
+            sheet.SelectedRange[1, 3, 1, 5].Merge = true;
+            sheet.Cells[1, 3, 1, 5].Value = "Svarbu!\nŠis mitybos planas yra individualus ir skirtas tik jį užsakiusiam klientui. Dalindamiesi šiuo mitybos planu rizikuojate kito asmens sveikata.";
+            sheet.Row(1).Height = 60;
             pic.SetSize(50);
             pic.SetPosition(0, 0);
         }
@@ -196,12 +199,29 @@ namespace MitybosPlanas
                 sheet.Cells[7, 5].Value = recipe.Title;
                 sheet.Cells[8, 5].Value = recipe.Ingredients;
 
-                DisplayRecipes(selectedRecipes, 9, sheet, package);
+                GoToNextPage(sheet);
+                DisplayRecipes(selectedRecipes, 10, sheet, package);
             }
             catch (Exception)
             {
                 throw;
             }
+        }
+
+        private void GoToNextPage(ExcelWorksheet sheet)
+        {
+            double pageHeight = 250;
+            double totalHeight = 0;
+
+            for (int row = 1; row <= 8; row++)
+            {
+                totalHeight += sheet.Row(row).Height;
+            }
+
+            if (totalHeight > pageHeight)
+                return;
+
+            sheet.Row(9).Height = pageHeight - totalHeight;
         }
 
         private void DisplayRecipes(List<Recipe> selectedRecipes, int row, ExcelWorksheet sheet, ExcelPackage package)
@@ -217,7 +237,8 @@ namespace MitybosPlanas
             {
                 sheet.Cells[row, 1, row, 5].Merge = true;
                 sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                sheet.Cells[row, 1, row, 5].Value = recipe.Title + "\n\n" + recipe.Ingredients;
+                sheet.Cells[row, 1, row, 5].RichText.Add(recipe.Title + "\n\n").Bold = true;
+                sheet.Cells[row, 1, row, 5].RichText.Add(recipe.Ingredients).Bold = false;
                 sheet.Row(row).Height = recipe.IngredientsHeight();
                 row++;
             }
@@ -233,7 +254,8 @@ namespace MitybosPlanas
             {
                 sheet.Cells[row, 1, row, 5].Merge = true;
                 sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                sheet.Cells[row, 1, row, 5].Value = recipe.Title + "\n\n" + recipe.Ingredients;
+                sheet.Cells[row, 1, row, 5].RichText.Add(recipe.Title + "\n\n").Bold = true;
+                sheet.Cells[row, 1, row, 5].RichText.Add(recipe.Ingredients).Bold = false;
                 sheet.Row(row).Height = recipe.IngredientsHeight();
                 row++;
             }
@@ -251,7 +273,8 @@ namespace MitybosPlanas
                 {
                     sheet.Cells[row, 1, row, 5].Merge = true;
                     sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                    sheet.Cells[row, 1, row, 5].Value = recipe.Title + " - " + recipe.Description;
+                    sheet.Cells[row, 1, row, 5].RichText.Add(recipe.Title + " - ").Bold = true;
+                    sheet.Cells[row, 1, row, 5].RichText.Add(recipe.Description).Bold = false;
                     sheet.Row(row).Height = recipe.DescriptionHeight();
                     row++;
                 }
@@ -263,7 +286,8 @@ namespace MitybosPlanas
                 {
                     sheet.Cells[row, 1, row, 5].Merge = true;
                     sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                    sheet.Cells[row, 1, row, 5].Value = recipe.Title + " - " + recipe.Description;
+                    sheet.Cells[row, 1, row, 5].RichText.Add(recipe.Title + " - ").Bold = true;
+                    sheet.Cells[row, 1, row, 5].RichText.Add(recipe.Description).Bold = false;
                     sheet.Row(row).Height = recipe.DescriptionHeight();
                     row++;
                 }
@@ -275,7 +299,8 @@ namespace MitybosPlanas
                 {
                     sheet.Cells[row, 1, row, 5].Merge = true;
                     sheet.Cells[row, 1, row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                    sheet.Cells[row, 1, row, 5].Value = recipe.Title + " - " + recipe.Description;
+                    sheet.Cells[row, 1, row, 5].RichText.Add(recipe.Title + " - ").Bold = true;
+                    sheet.Cells[row, 1, row, 5].RichText.Add(recipe.Description).Bold = false;
                     sheet.Row(row).Height = recipe.DescriptionHeight();
                     row++;
                 }
