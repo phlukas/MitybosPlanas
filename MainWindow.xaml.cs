@@ -51,7 +51,9 @@ namespace MitybosPlanas
                 using ExcelPackage package = new ExcelPackage(savePath);
                 var sheet = package.Workbook.Worksheets.Add("Planas");
 
-                sheet.SelectedRange[1, 1, 100, 5].Style.Font.Size = 10;
+                sheet.SelectedRange[1, 1, 100, 5].Style.Font.Size = 10; //viso dokumento srifto dydis
+                sheet.SelectedRange[1, 1, 8, 5].Style.Font.Size = 9; //lenteles dydis srifto
+                sheet.SelectedRange[1, 1, 8, 5].Style.Font.Name = "Courier New"; //lenteles srifto stilius
                 sheet.SelectedRange[1, 1, 100, 5].Style.WrapText = true;
                 sheet.SelectedRange[1, 1, 100, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 sheet.SelectedRange[1, 1, 100, 5].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
@@ -64,7 +66,7 @@ namespace MitybosPlanas
                 sheet.Cells["D2"].Value = "Penktadienis, Šeštadienis";
                 sheet.Cells["E2"].Value = "Sekmadienis";
 
-                sheet.Column(1).Width = 9;
+                sheet.Column(1).Width = 10;
                 sheet.Column(2).Width = 18;
                 sheet.Column(3).Width = 18;
                 sheet.Column(4).Width = 18;

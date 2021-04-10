@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MitybosPlanas"
         mc:Ignorable="d"
-        Title="Mitybos planuotojas" Height="600" Width="1200" SizeToContent="Manual" WindowStartupLocation="CenterScreen" Icon="/1695234-200.png" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Background="#FFD0E1FF">
+        Title="Mitybos planuotojas" Height="600" Width="1200" SizeToContent="Manual" WindowStartupLocation="CenterScreen" Icon="/1695234-200.png" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Background="#FFDADFE8">
     <Grid Margin="0,4,0,-6">
         <Grid.RowDefinitions>
             <RowDefinition Height="57*"/>
